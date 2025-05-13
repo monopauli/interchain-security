@@ -565,12 +565,24 @@ func (k Keeper) GetAllCCValidator(ctx sdk.Context) (validators []types.CrossChai
 	iterator := sdk.KVStorePrefixIterator(store, []byte{types.CrossChainValidatorBytePrefix})
 
 	defer iterator.Close()
+
+	var index int = 0 // Initialize an index counter
 	for ; iterator.Valid(); iterator.Next() {
 		val := types.CrossChainValidator{}
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		validators = append(validators, val)
-		fmt.Printf("Current validator (val): %+v\n", val)
+
+		// Print the current validator with its index (0-based)
+		fmt.Printf("Validator [%d]: %+v\n", index, val)
+
+		index++ // Increment the index for the next iteration
 	}
+
+	// Print the total number of validators found
+	fmt.Printf("Total number of validators found: %d\n", len(validators))
+	// Or you could use the 'index' variable if you are sure the loop always runs at least once
+	// and you don't mind if it's 0 when no validators are found (though len(validators) is more direct).
+	// fmt.Printf("Total number of validators found: %d\n", index)
 
 	return validators
 }
