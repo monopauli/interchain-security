@@ -569,6 +569,7 @@ func (k Keeper) GetAllCCValidator(ctx sdk.Context) (validators []types.CrossChai
 		val := types.CrossChainValidator{}
 		k.cdc.MustUnmarshal(iterator.Value(), &val)
 		validators = append(validators, val)
+		fmt.Printf("Current validator (val): %+v\n", val)
 	}
 
 	return validators
